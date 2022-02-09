@@ -74,9 +74,7 @@ p - 1 = e^2 * 595281806834935547588750612822579544 = e^2 * a
 q - 1 = e^2 * 1166496859974663373610920113005431380 = e^2 * b
 ```
 
-Interestingly -> C^(a*b*e^3) mod N = 1 since N = a * b * e^4
-
-Trying to find the generator “ge”:
+Trying to find the generator ```ge```:
 ```
 g = 1
 while True:
@@ -87,7 +85,7 @@ while True:
 print(ge)
 ```
 
-However, no luck as this was running overnight :(
+However, no luck as this was running overnight and found nothing :(
 
 
 ### Attempt 5: Using this random tool from github
