@@ -1,5 +1,3 @@
-# DiceCTF
+# DiceCTF - Team 10thPlanet
 
-## Team Name: 10thPlanet
-
-Team Members: Jessy Ayala, Zexing Li, Sarah Reecy, Dave Torres, Rudra Panda
+## Members: Jessy Ayala, Zexing Li, Sarah Reecy, Dave Torres, Rudra Panda
