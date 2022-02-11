@@ -2,7 +2,7 @@
 
 Knock Knock is a JavaScript challenge where we are given a website that functions as a pastebin and the underlying js code. 
 
-Problem:
+### Problem:
 
 The challenge website presented as a simple pastebin. Users can give input that is then available at a link with the parameters ```id``` and ```token```.
 
@@ -12,7 +12,7 @@ If the ```id``` or ```token``` parameters are changed, then the system tells you
 
 ![](images/img2.png?raw=true)
 
-Attempts:
+### Attempts:
 
 Initially, we approached this as a XSS problem. The system is vulnerable to script injection and does output a response to ```<script>alert(1)</script>```. 
 
@@ -49,6 +49,8 @@ Scanned with nmap to find hidden port: 443. 80 is the one we use to browse prope
 Goal should be leaking ```this.secret```. In the source code above, we see ```this.secret = secret-${crypto.randomUUID}```
 
 At this point, the CTF ended and we were unable to find the flag in time :( 
+
+### Solution: 
 
 It turns out that:
 
