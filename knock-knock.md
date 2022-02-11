@@ -48,7 +48,7 @@ Scanned with nmap to find hidden port: 443. 80 is the one we use to browse prope
 
 Goal should be leaking ```this.secret```. In the source code above, we see ```this.secret = secret-${crypto.randomUUID}```
 
-Maybe I can reveal this.secret by posting it to my server. I set up a request catcher as:https://myreq.requestcatcher.com/ - no luck :(
+Maybe we can reveal ```this.secret``` by posting it to a server by setting up a request catcher as:https://myreq.requestcatcher.com/ - no luck :(
 
 At this point, the CTF ended and we were unable to find the flag in time.
 
