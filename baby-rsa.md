@@ -115,7 +115,7 @@ Code running… ```O(p) + O(q)``` -> in parallel ```max[O(p),O(q)]```
 
 ### Solution:
 
-Sage has a built-in function ```nth_root``` that will retrieve such values without having to brute force them as described above with:
+It turns out Sage has a built-in function ```nth_root``` that will retrieve such values without having to brute force them as described above with:
 
 ```
 x = mod(cipher, p).nth_root(e, all=True) 
