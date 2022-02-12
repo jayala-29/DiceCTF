@@ -24,37 +24,28 @@ We attempted to inject script that would return the file ```/flag```.
 
 ![](images/img4.png?raw=true)
 
-Next we attempted some reconnaissance using Wireshark, cURL and nmap.
+Next we attempted some reconnaissance using Wireshark, cURL and nmap because the name of the challenge could refer to port knocking.
 
-We use Wireshark to find the IP address of the target, then cURL it which returns 0.Finally an nmap scan reveals that port 443 is open.
+We used Wireshark to find the IP address of the target, then cURL it which returned 0.Finally an nmap scan reveals that port 443 is open.This told us that that the solution did not involve hidden ports and that further investigation of the provided javascript file was required. 
 
-This told us that that the solution did not require XSS alone and that further investigation of the provided js was required. 
+Review of the source code that was provided revealed that the flag was the first post after the instantiation of the database:
 
-Review revealed that the flag was likely at ```id=0```. Desired method is injection of javascript code by something like eval() in the input. We set up a request catcher at https://myreq.requestcatcher.com/. 
+```
+const db = new Database();
+db.createNote({ data: process.env.FLAG });
+```
 
-Can we leak ```this.secret``` with XSS so that we can generate the token for ```id=0```?
+This means that the flag was in the post with id=0. As a result, the goal became to discover a way to leak the token which is generated with a secretary key variable:
 
-First, we found the IP address of the target to enable sniffing.
+```
+this.secret = `secret-${crypto.randomUUID}`
+```
 
-![](images/img5.png?raw=true)
-
-Curling 72.21.91.29 returns 0. 
-
-![](images/img6.png?raw=true)
-
-Scanned with nmap to find hidden port: 443. 80 is the one we use to browse properly, as the Wireshark interception result shows.
-
-![](images/img7.png?raw=true)
-
-Goal should be leaking ```this.secret```. In the source code above, we see ```this.secret = secret-${crypto.randomUUID}```
-
-Maybe we can reveal ```this.secret``` by posting it to a server by setting up a request catcher as:https://myreq.requestcatcher.com/ - no luck :(
-
-At this point, the CTF ended and we were unable to find the flag in time.
+Using replit.com to dynamically modify and run the source code, we were able to observe odd behavior where the above line of code would output “secret-undefined”. At this point, the CTF ended but we continued to work on the problem.
 
 ### Solution: 
 
-It turns out that:
+After further work, it turns out that the version of Node.Js dictates the behavior of crypto.randomUUID. Running it on on replit.com produced undefined output but running it on a newer version of Node.JS produces the following output:
 
 ```
 > const secret = `secret-${crypto.randomUUID}`;
@@ -73,7 +64,7 @@ undefined
   '}'
 ```
 
-So all we really had to do was create our own “secret” with the id=0 attribute and include the result as a token to the CTF’s URL:
+We realized that this was the flaw of the code. The secret creation did not call crypto.randomUUID properly so the output was the help text. So all we really had to do was create our token with that secret and with the id=0 attribute and include the result as a token to the CTF’s URL:
 
 ```
 > crypto.createHmac('sha256', secret).update('0').digest('hex')
